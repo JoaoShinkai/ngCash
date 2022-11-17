@@ -1,0 +1,4 @@
+ngcash_data
+node_modules
+ormconfig.json
+.env
