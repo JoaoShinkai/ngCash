@@ -19,7 +19,7 @@ import { styled } from '@mui/material/styles';
 interface Props {
     title: string;
     loading: boolean;
-    onClick?: () => {};
+    onClick?: () => Promise<void>;
 }
   
 export default function CustomizedButtons({title, loading, onClick}: Props) {

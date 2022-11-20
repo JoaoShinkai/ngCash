@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Button from '../../components/Button';
-import { api } from '../../lib/api';
+import { useAuth } from '../../hook/useAuth';
 import customToast from '../../toast/customToast';
 
 import './login.css';
@@ -14,16 +14,34 @@ export default function Login(){
     const [password, setPassword] = useState('');
     const [isLoadingData, setIsLoadingData] = useState(false);
 
-    async function login() {
-        try{
-            const result = await api.post('/user/login', { username, password })
+    const { signIn, logout } = useAuth();
 
-            console.log(result);
-        }catch(err){
+    const navigate = useNavigate();
+
+    async function login(){
+        const res = await signIn(username, password);
+
+        console.log(res);
+
+        if(res){
+            navigate("/dashboard")
+        }
+        else{
             customToast.error("Erro ao realizar login");
-            console.log(err);
         }
     }
+
+    // async function login() {
+    //     try{
+    //         const result = await api.post('/user/login', { username, password })
+
+    //         localStorage.setItem('token', result.data.token);
+
+    //     }catch(err){
+    //         customToast.error("Erro ao realizar login");
+    //         console.log(err);
+    //     }
+    // }
 
     return(
         <div className='ngCash-login bg-zinc-900 flex p-8'>

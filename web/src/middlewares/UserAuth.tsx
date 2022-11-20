@@ -1,4 +1,5 @@
 import { Navigate } from 'react-router-dom';
+import { useAuth } from '../hook/useAuth';
 
 export interface props {
     children: React.ReactNode; 
@@ -6,17 +7,18 @@ export interface props {
 
 export default function UserAuth({ children }: props){
 
-    const logged = true;
-    const loadingProvider = false;
 
 
-    if(loadingProvider){
+    const { user, isUserLoading} = useAuth();
+
+
+    if(isUserLoading){
         return(
             <div>Loading</div>
         )
     }
     
-    if(!logged){
+    if(!user.username){
         return <Navigate to="/" />
     }
 

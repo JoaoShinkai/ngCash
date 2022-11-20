@@ -69,7 +69,6 @@ export default function SignUp(){
                             <input type="password" placeholder='Confirmar Senha' value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className='border-none p-4 bg-zinc-800 rounded-md border-gray-600 flex-1 outline-none' />
                         </div>
                         <div>
-                            {/* <LoadingButton onClick={submit} color="primary" variant="contained" loading={isLoadingData} className="my-4">Cadastrar</LoadingButton> */}
                             <Button title='Cadastrar' loading={isLoadingData} onClick={submit}/>
                         </div>
                         <div>Já possui uma conta? <Link to="/">Entre</Link></div> 
