@@ -1,6 +1,13 @@
 import { IAccountDTO } from '@modules/account/dtos/IAccountDTO';
+import User from '@modules/user/infra/typeorm/entities/User';
 import DefaultEntity from '@shared/infra/typeorm/entities/DefaultEntity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 
 @Entity('accounts')
 export default class Account extends DefaultEntity implements IAccountDTO {
@@ -9,4 +16,8 @@ export default class Account extends DefaultEntity implements IAccountDTO {
 
   @Column()
   balance: number;
+
+  @OneToOne(() => User, user => user.account)
+  @JoinTable()
+  user: User;
 }

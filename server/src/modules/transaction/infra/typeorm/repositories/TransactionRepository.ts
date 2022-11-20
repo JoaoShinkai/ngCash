@@ -13,4 +13,36 @@ export default class TransactionRepository implements ITransactionRepository {
   create(data: ITransactionDTO): Promise<ITransactionDTO> {
     return this.repository.save(data);
   }
+
+  listReceived(id: number): Promise<ITransactionDTO[]> {
+    return this.repository.find({
+      where: {
+        creditedAccount: {
+          id
+        }
+      },
+      relations: [
+        'debitedAccount',
+        'debitedAccount.user',
+        'creditedAccount',
+        'creditedAccount.user'
+      ]
+    });
+  }
+
+  listSent(id: number): Promise<ITransactionDTO[]> {
+    return this.repository.find({
+      where: {
+        debitedAccount: {
+          id
+        }
+      },
+      relations: [
+        'debitedAccount',
+        'debitedAccount.user',
+        'creditedAccount',
+        'creditedAccount.user'
+      ]
+    });
+  }
 }

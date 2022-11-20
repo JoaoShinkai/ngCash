@@ -6,5 +6,6 @@ const transactionRoutes = Router();
 const transactionController = new TransactionController();
 
 transactionRoutes.post('/', userAuth, transactionController.create);
+transactionRoutes.get('/', userAuth, transactionController.list);
 
 export { transactionRoutes };
