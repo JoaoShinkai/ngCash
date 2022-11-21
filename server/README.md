@@ -1,4 +1,4 @@
-# Backend
+# API
 
 Ng.Cash backend repository
 
