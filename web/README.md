@@ -15,6 +15,12 @@ Ng.Cash fronted repository
 
 With the API running, in the project directory, you can run:
 
+###
+
+```
+npm install
+```
+
 ### 
 
 ```
