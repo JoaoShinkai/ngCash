@@ -47,8 +47,11 @@ export default function Tabs(){
             if(!!err.response.data.message){
                 customToast.error(err.response.data.message)
             }
-            customToast.error("Erro interno");
-            console.log(err);
+            else{
+                customToast.error("Não foi possível realizar a transferência");
+                console.log(err);
+            }
+            
         } finally{
             
             setIsSendingTransfer(false)
@@ -94,7 +97,6 @@ export default function Tabs(){
                     <TabList onChange={handleChange} aria-label="lab API tabs example">
                         <AntTab label="Nova Transferência" value="1" />
                         <AntTab label="Ver extrato" value="2" />
-                        <AntTab label="Item Three" value="3" />
                     </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -113,7 +115,6 @@ export default function Tabs(){
                 <TabPanel value="2">
                     <TransactionsTable />
                 </TabPanel>
-                <TabPanel value="3">Item Three</TabPanel>
             </TabContext>
         </Box>
     )

@@ -14,14 +14,14 @@ export default function Login(){
     const [password, setPassword] = useState('');
     const [isLoadingData, setIsLoadingData] = useState(false);
 
-    const { signIn, logout } = useAuth();
+    const { signIn } = useAuth();
 
     const navigate = useNavigate();
 
     async function login(){
-        const res = await signIn(username, password);
+        setIsLoadingData(true);
 
-        console.log(res);
+        const res = await signIn(username, password);
 
         if(res){
             navigate("/dashboard")
@@ -29,19 +29,9 @@ export default function Login(){
         else{
             customToast.error("Erro ao realizar login");
         }
+
+        setIsLoadingData(false);
     }
-
-    // async function login() {
-    //     try{
-    //         const result = await api.post('/user/login', { username, password })
-
-    //         localStorage.setItem('token', result.data.token);
-
-    //     }catch(err){
-    //         customToast.error("Erro ao realizar login");
-    //         console.log(err);
-    //     }
-    // }
 
     return(
         <div className='ngCash-login bg-zinc-900 flex p-8'>

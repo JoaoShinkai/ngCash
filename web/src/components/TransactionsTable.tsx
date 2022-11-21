@@ -1,6 +1,5 @@
 import { format } from 'date-fns';
 
-import { Button } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,6 +11,8 @@ import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../hook/useAuth';
 import { api } from '../lib/api';
+
+import { LoadingButton } from '@mui/lab';
 
 interface TransactionsProps {
     id: number;
@@ -37,6 +38,7 @@ export default function TransactionsTable(){
     const [filteredTransactions, setFilteredTransactions] = useState<TransactionsProps[]>([]);
     const [transactionType, setTransactionType] = useState<"all" | "sent" | "received">('all');
     const [filterDate, setFilterDate] = useState<string | null>(null);
+    const [isLoadingFilter, setIsLoadingFilter] = useState(false);
 
     const { user } = useAuth();
 
@@ -72,6 +74,7 @@ export default function TransactionsTable(){
     }
 
     async function filterTransactions(){
+        setIsLoadingFilter(true);
         const res = await api.get('/transaction');
         
         let items: TransactionsProps[] = res.data;
@@ -91,6 +94,7 @@ export default function TransactionsTable(){
         }
 
         setFilteredTransactions(items);
+        setIsLoadingFilter(false);
     }
 
     return(
@@ -102,7 +106,7 @@ export default function TransactionsTable(){
                     <option value="received">Recebidos</option>
                     <option value="sent">Enviados</option>
                 </select>
-                <Button variant='contained' onClick={() => filterTransactions()}> <i className="fa-solid fa-filter pr-2"></i> Filtrar</Button>
+                <LoadingButton loading={isLoadingFilter} variant='contained' onClick={() => filterTransactions()}> <i className="fa-solid fa-filter pr-2"></i> Filtrar</LoadingButton>
             </div>
             <TableContainer component={Paper} sx={{ borderRadius: 2, backgroundColor: '#27272a' }}>
                 <Table sx={{ minWidth: 650, backgroundColor: '#27272a' }} size="medium" aria-label="a dense table">
@@ -116,18 +120,29 @@ export default function TransactionsTable(){
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    {filteredTransactions.map((row) => (
-                        <TableRow
-                            key={row.id}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 }, 'td, th': {color: 'white', borderColor: '#333333'} }}
-                        >
-                            <TableCell component="th" scope="row">{row.id}</TableCell>
-                            <TableCell align="center">{row.debitedAccount.user.username}</TableCell>
-                            <TableCell align="center">{row.creditedAccount.user.username}</TableCell>
-                            <TableCell align="center">{row.value}</TableCell>
-                            <TableCell align="right">{ format(new Date(row.createdAt), 'dd/MM/yyyy HH:mm') }</TableCell>
-                        </TableRow>
-                    ))}
+                    {
+                    filteredTransactions.length > 0 ?
+                        filteredTransactions.map((row) => (
+                            <TableRow
+                                key={row.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 }, 'td, th': {color: 'white', borderColor: '#333333'} }}
+                            >
+                                <TableCell component="th" scope="row">{row.id}</TableCell>
+                                <TableCell align="center">{ row.debitedAccount.user.id === user.id ? `${row.debitedAccount.user.username} (Você)` : row.debitedAccount.user.username }</TableCell>
+                                <TableCell align="center">{ row.creditedAccount.user.id === user.id ? `${row.creditedAccount.user.username} (Você)` : row.creditedAccount.user.username }</TableCell>
+                                <TableCell align="center">R$ {row.value}</TableCell>
+                                <TableCell align="right">{ format(new Date(row.createdAt), 'dd/MM/yyyy HH:mm') }</TableCell>
+                            </TableRow>
+                        ))
+                    :
+                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 }, 'td, th': {color: 'white', borderColor: '#333333'} }}>
+                            <TableCell align="center" className='w-[20%]'></TableCell>
+                            <TableCell align="center" className='w-[20%]'></TableCell>
+                            <TableCell align="center" className='w-[20%]'>Nenhuma transferência encontrada</TableCell>
+                            <TableCell align="center" className='w-[20%]'></TableCell>
+                            <TableCell align="center" className='w-[20%]'></TableCell>
+                        </TableRow> 
+                    }
                     </TableBody>
                 </Table>
             </TableContainer>

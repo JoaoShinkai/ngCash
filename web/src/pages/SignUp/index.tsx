@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../components/Button';
+import { useAuth } from '../../hook/useAuth';
+import { api } from '../../lib/api';
 import customToast from '../../toast/customToast';
 
-
-import { api } from '../../lib/api';
+import { useNavigate } from 'react-router-dom';
 
 const Logo = require('../../assets/logo.png');
 
@@ -15,10 +16,16 @@ export default function SignUp(){
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isLoadingData, setIsLoadingData] = useState(false);
 
+    const navigate = useNavigate();
+
+    const { signIn } = useAuth();
+
     async function submit(){
 
         setIsLoadingData(true)
 
+        const hasUpper = (password: string) => /[A-Z]/.test(password);
+        const hasNumber = (password: string) => /[0-9]/.test(password);
 
         if(username.length < 3){
             customToast.error("O campo de usuário deve conter ao menos 3 caracteres");
@@ -35,12 +42,26 @@ export default function SignUp(){
             setIsLoadingData(false);
             return;
         }
-
-
+        if(!hasUpper(password) || !hasNumber(password)){
+            customToast.error("A Senha deve conter ao menos um caractere maiúsculo e um número");
+            setIsLoadingData(false);
+            return;
+        }
+        
         try{
             await api.post('/user', { username, password });
 
             customToast.success("Usuário cadastrado com sucesso");
+
+            const res = await signIn(username, password);
+
+            if(res){
+                navigate("/dashboard")
+            }
+            else{
+                customToast.error("Erro ao realizar login");
+            }
+
             setIsLoadingData(false);
         }catch(err){
             console.log(err);

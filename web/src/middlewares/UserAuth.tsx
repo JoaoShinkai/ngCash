@@ -1,6 +1,8 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../hook/useAuth';
 
+import CircularProgress from '@mui/material/CircularProgress';
+
 export interface props {
     children: React.ReactNode; 
 }
@@ -14,7 +16,9 @@ export default function UserAuth({ children }: props){
 
     if(isUserLoading){
         return(
-            <div>Loading</div>
+            <div className='min-h-screen bg-zinc-800 flex justify-center items-center'>
+                <CircularProgress />
+            </div>
         )
     }
     
