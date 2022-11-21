@@ -15,6 +15,12 @@ Ng.Cash backend repository
 
 In the project directory, you can run:
 
+###
+
+```
+npm install
+```
+
 ### 
 
 ```
