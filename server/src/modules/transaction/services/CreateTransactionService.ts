@@ -27,23 +27,25 @@ export default class CreateTransactionService {
     );
 
     if (!userToBeCredited) {
-      throw new AppError('Cannot find user with this name');
+      throw new AppError('Não possível encontrar um usuário com esse nome');
     }
 
     // Verify logged user
     const userToBeDebited = await this.userRepository.find(debitUserId);
 
     if (!userToBeDebited || !userToBeDebited.account.id) {
-      throw new AppError('Cannot find account to be debited');
+      throw new AppError('Conta não encontrada');
     }
 
     if (userToBeDebited.id === userToBeCredited.id) {
-      throw new AppError('Cannot transfer to yourself');
+      throw new AppError(
+        'Não é possível realizar uma transferência para você mesmo'
+      );
     }
 
     // Verify if accounts exists
     if (!userToBeDebited.account.id || !userToBeCredited.account.id) {
-      throw new AppError('Internal error');
+      throw new AppError('Erro interno');
     }
 
     // Consult accounts
@@ -62,12 +64,12 @@ export default class CreateTransactionService {
       !debitAccount.id ||
       !creditAccount.id
     ) {
-      throw new AppError('Cannot find account');
+      throw new AppError('Não foi possível encontrar conta');
     }
 
     // Verify if the account to be debited has sufficient fund
     if (debitAccount.balance < value) {
-      throw new AppError('Insufficient Fund');
+      throw new AppError('Saldo insuficiente');
     }
 
     try {

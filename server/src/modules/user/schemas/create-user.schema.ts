@@ -1,8 +1,8 @@
 import { Joi } from 'celebrate';
 
 const createUserSchema = Joi.object({
-  username: Joi.string().required(),
-  password: Joi.string().required()
+  username: Joi.string().required().min(3),
+  password: Joi.string().required().min(8)
 });
 
 export default createUserSchema.options({

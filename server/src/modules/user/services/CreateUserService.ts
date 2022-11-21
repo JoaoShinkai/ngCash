@@ -17,7 +17,7 @@ export default class CreateUserService {
     const user = await this.userRepository.findByUsername(data.username);
 
     if (user) {
-      throw new AppError('User with this name already exists');
+      throw new AppError('Username já utilizado');
     }
 
     const account = await this.accountRepository.create({});

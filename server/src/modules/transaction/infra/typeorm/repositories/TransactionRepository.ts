@@ -26,7 +26,10 @@ export default class TransactionRepository implements ITransactionRepository {
         'debitedAccount.user',
         'creditedAccount',
         'creditedAccount.user'
-      ]
+      ],
+      order: {
+        id: 'DESC'
+      }
     });
   }
 
@@ -42,7 +45,10 @@ export default class TransactionRepository implements ITransactionRepository {
         'debitedAccount.user',
         'creditedAccount',
         'creditedAccount.user'
-      ]
+      ],
+      order: {
+        id: 'DESC'
+      }
     });
   }
 }
