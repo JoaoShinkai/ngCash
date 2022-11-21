@@ -21,5 +21,5 @@ In the project directory, you can run:
 docker compose up --build -d
 ```
 
-The API will be run at http://localhost:4000 
+The API will be run on http://localhost:4000 
 
