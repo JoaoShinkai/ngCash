@@ -13,7 +13,7 @@ Ng.Cash fronted repository
 
 ## Available Scripts
 
-In the project directory, you can run:
+With the API running, in the project directory, you can run:
 
 ### 
 
