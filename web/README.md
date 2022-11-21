@@ -1,6 +1,6 @@
 # Fronted
 
-Ng.Cash fronted project
+Ng.Cash fronted repository
 
 ## Ferramentas utilizadas
 
